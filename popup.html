@@ -143,6 +143,20 @@
   color:grey;
 }
 
+/* special styles for google */
+.checkbox-google-only-easy-oer input:checked+.form-icon {
+    background: green;
+    border-color: green;
+}
+.checkbox-google-include-nc input:checked+.form-icon {
+    background: #ff8c00;
+    border-color: #ff8c00;
+}
+.checkbox-google-include-nd input:checked+.form-icon {
+    background: red;
+    border-color: red;
+}
+
 
     </style>
     <!--
@@ -190,31 +204,31 @@
                 </div>
                 <div id="google">
 
-                    <div class="toast toast-success" style="display:none;">
-                     <!-- <button class="btn btn-clear float-right"></button> -->
+                    <!-- <div class="toast toast-success" style="display:none;">
+                     
                       <i class="icon icon-check"></i> Lizenzfilter wurde aktiviert
                     </div>
                     <div class="toast toast-info" style="text-align: center;">
                       Lizenzfilter noch nicht aktiv, unten aktivieren:
-                    </div>
-
+                    </div> -->
+                    <h3 style="font-size:14px;">Filter für Google Web / Google Images</h3>
                     <ul class="menu">
                         <!-- menu header text -->
                         <!-- <li class="divider" data-content="Lizenzfilter">
   </li> -->
                         <!-- menu item with form control -->
                         <li class="menu-item">
-                            <label class="form-checkbox">
-                                <input type="checkbox" name="google-only-oer" checked="true" disabled>
-                                <i class="form-icon" style="border-color:green;background-color:green;opacity: 1 !important;"></i> <span class="text-success">OER-kompatible Inhalte anzeigen, die für alle Lehr- und Lernszenarien offen nutzbar sind<br><span style="font-size:80%">(CC0/Gemeinfrei, CC BY, CC BY-ShareAlike)</span></span>
+                            <label class="form-checkbox checkbox-google-only-easy-oer">
+                                <input type="checkbox" name="google-only-easy-oer">
+                                <i class="form-icon" style="border-color:green;opacity: 1 !important;"></i> <span class="text-success">OER-kompatible Inhalte anzeigen, die für alle Lehr- und Lernszenarien offen nutzbar sind<br><span style="font-size:80%">(CC0/Gemeinfrei, CC BY, CC BY-ShareAlike)</span></span>
                             </label>
                         </li>
                         <li class="divider" data-content="Optional - zusätzlich miteinbeziehen:" style="color:grey;">
                         </li>
                         <!-- menu item with form control -->
                         <li class="menu-item">
-                            <label class="form-checkbox" style="color:grey;font-size: 80%;line-height:1rem !important;">
-                                <input type="checkbox" name="google-include-nc" value="1">
+                            <label class="form-checkbox checkbox-google-include-nc" style="color:grey;font-size: 80%;line-height:1rem !important;">
+                                <input type="checkbox" name="google-include-nc" value="1" disabled>
                                 <i class="form-icon"></i>Inhalte, die nur <i>nichtkommerziell</i> genutzt werden dürfen (NC-Lizenz, kompatibel zur UNESCO-OER-Definition)
                             </label>
                         </li>
@@ -222,14 +236,14 @@
   </li> -->
                         <!-- menu item with form control -->
                         <li class="menu-item">
-                            <label class="form-checkbox" style="color:grey;font-size: 80%;line-height:1rem !important;">
-                                <input type="checkbox" name="google-include-nd" value="1">
+                            <label class="form-checkbox checkbox-google-include-nd" style="color:grey;font-size: 80%;line-height:1rem !important;">
+                                <input type="checkbox" name="google-include-nd" value="1" disabled>
                                 <i class="form-icon"></i> Inhalte, die nicht adaptiert/verändert werden dürfen (ND-Lizenz, kein OER gemäß UNESCO-Definition)
                             </label>
                         </li>
                     </ul>
-                    <div class="p-centered" style="text-align:center;margin-top:20px;">
-                        <button id="google-filter-results" class="btn btn-primary btn-lg btn-error"><i class="icon icon-check"></i> <span>Lizenzfilter aktivieren</span></button>
+                    <div class="p-centered" style="text-align:center;margin-top:20px;display:none;">
+                        <button id="google-filter-results" class="btn btn-primary btn-lg btn-error"><i class="icon icon-check"></i> <span>Lizenfilter aktivieren</span></button>
 
                         <br>
                         <a id="google-reset"><small>Lizenzfilter deaktivieren</small></a>
