@@ -95,43 +95,56 @@ var ResultListConverterClass = function() {
     // this is strange: on google search results page 2, the url parameters change to tbs=sur:fc (like image search)
     console.log('Check if filter is alreay set');
 
-    if (this.urlParamsObject.has('as_rights') 
-        || (this.urlParamsObject.has('tbs') && this.urlParamsObject.get('tbs').includes('sur:f'))
-        ) {
-        console.log('license filter was previously set, examine further');
+    if (this.urlParamsObject.has('as_rights') || (this.urlParamsObject.has('tbs') && this.urlParamsObject.get('tbs').includes('sur:f')))
+     {
+        console.log('license filter was previously set, examine further (as_rights, tbs)',this.urlParamsObject.get('as_rights'),this.urlParamsObject.get('tbs'));
 
         this.googleShowSuccessMessageFilterSet();
         
         // the following is only supposed to be used in web search,not image search
           switch (this.urlParamsObject.get('as_rights')) {
             case '(cc_publicdomain|cc_attribute|cc_sharealike).-(cc_noncommercial|cc_nonderived)':
-              // no need to do something, bot checkboxes are not checked by default
+              $("input[name='google-only-easy-oer']").prop('checked', true);
+              $("input[name='google-include-nc']").prop('disabled',false);
+              $("input[name='google-include-nd']").prop('disabled',false);
               break;
             case '(cc_publicdomain|cc_attribute|cc_sharealike|cc_noncommercial).-(cc_nonderived)':
-              $("input[name='google-include-nc']").prop('checked', true);
+              $("input[name='google-only-easy-oer']").prop('checked', true);
+              $("input[name='google-include-nc']").prop('checked', true).prop('disabled',false);
+              $("input[name='google-include-nd']").prop('disabled',false);
               break;
             case '(cc_publicdomain|cc_attribute|cc_sharealike|cc_nonderived).-(cc_noncommercial)':
-              $("input[name='google-include-nd']").prop('checked', true);
+              $("input[name='google-only-easy-oer']").prop('checked', true);
+              $("input[name='google-include-nc']").prop('disabled',false);
+              $("input[name='google-include-nd']").prop('checked', true).prop('disabled',false);
               break;
             case '(cc_publicdomain|cc_attribute|cc_sharealike|cc_noncommercial|cc_nonderived)':
-              $("input[name='google-include-nc']").prop('checked', true);
-              $("input[name='google-include-nd']").prop('checked', true);
+              $("input[name='google-only-easy-oer']").prop('checked', true);
+              $("input[name='google-include-nc']").prop('checked', true).prop('disabled',false);
+              $("input[name='google-include-nd']").prop('checked', true).prop('disabled',false);
               break;
           } // eo switch
         
         switch (this.urlParamsObject.get('tbs')) {
-          case "surf:fmc":
-            // fmc -> easy oer, needs no further selection, because both checkboxes are not checked by default
+          case "sur:fmc":
+            $("input[name='google-only-easy-oer']").prop('checked', true);
+            $("input[name='google-include-nc']").prop('disabled',false);
+            $("input[name='google-include-nd']").prop('disabled',false);
             break;
           case 'sur:fm':
-            $("input[name='google-include-nc']").prop('checked', true);
+            $("input[name='google-only-easy-oer']").prop('checked', true);
+            $("input[name='google-include-nc']").prop('checked', true).prop('disabled',false);
+            $("input[name='google-include-nd']").prop('disabled',false);
             break;
           case 'sur:fc':
-            $("input[name='google-include-nd']").prop('checked', true);
+            $("input[name='google-only-easy-oer']").prop('checked', true);
+             $("input[name='google-include-nc']").prop('disabled',false);
+            $("input[name='google-include-nd']").prop('checked', true).prop('disabled',false);
             break;
           case 'sur:f':
-            $("input[name='google-include-nc']").prop('checked', true);
-            $("input[name='google-include-nd']").prop('checked', true);
+            $("input[name='google-only-easy-oer']").prop('checked', true);
+            $("input[name='google-include-nc']").prop('checked', true).prop('disabled',false);
+            $("input[name='google-include-nd']").prop('checked', true).prop('disabled',false);
             break;
         } // eo switch
       } // eo already set license filter
@@ -145,6 +158,22 @@ var ResultListConverterClass = function() {
   this.google = function() {
 
     console.log('start result list converter for google');
+
+    var detected = false;
+    if (this.urlParamsObject.has('tbm') && this.urlParamsObject.get('tbm') == 'isch'){
+      console.log('Google image search website detected');
+      detected = 'google-images';
+    }
+    else if(this.urlObject.pathname.includes('/search') && !this.urlParamsObject.has('tbm')){
+      console.log('Google web search website detected');
+      detected = 'google-web';
+    }
+    else{
+      console.log('Detected nothing, return false');
+      return false;
+    }
+
+
 
     // google does not offer the possibility to search for CC BY, but not CC BY-SA
     // these are the possible cases with 
@@ -172,8 +201,8 @@ var ResultListConverterClass = function() {
     ####### google web search ########
     ##################################
     */
-    if (this.urlObject.pathname.includes('/search') && !this.urlParamsObject.has('tbm')) {
-      console.log('Google web search website detected');
+    if (detected === 'google-web') {
+      
 
       // set new urls for each case
 
@@ -198,9 +227,9 @@ var ResultListConverterClass = function() {
     ##################################
     */
     // 2DO: image search without search query entered: https://www.google.de/imghp?hl=de
-    if (this.urlParamsObject.has('tbm') && this.urlParamsObject.get('tbm') == 'isch') {
+    if (detected == 'google-images') {
 
-      console.log('Google image search website detected');
+
 
 
       // --> getParams --> set checkboxes accordingly input[name='google-include-nc']:checked").val(
@@ -256,13 +285,27 @@ var ResultListConverterClass = function() {
     ###### events for web & image search #######
     ############################################ */
 
+    // 
+    var parent = this;
+
+    $("input[name='google-only-easy-oer']").change(function() {
+            
+    });
+
     // 2DO: add listener for button clicks for image search
-      var parent = this;
-      $("#google-filter-results").on('click', function() {
+    //$("#google-filter-results").on('click', function() {
+    $("input[name='google-only-easy-oer'], input[name='google-include-nc'], input[name='google-include-nd']").change(function() {
 
-        console.log('click - filter results', $(this));
+      console.log('change event for one of the checkboxes checkbox',$(this),$(this).is(":checked"));
+        // main checkbox is active
+        if($("input[name='google-only-easy-oer']").is(":checked")) {
+          // unlock other checkboxes if they were disabled
+          $("input[name='google-include-nc']").prop('disabled', false);
+          $("input[name='google-include-nd']").prop('disabled', false);
 
-        var urlToOpen = '';
+          // perform the change
+
+          var urlToOpen = '';
         // checkbox selection by user
 
         var includeNc = Boolean($("input[name='google-include-nc']:checked").val());
@@ -292,8 +335,10 @@ var ResultListConverterClass = function() {
           urlToOpen = urlIncludeNd;
         }
 
+
+
         console.log('try to open new url', urlToOpen);
-        // 2DO: put in function?
+        // 2DO: put in function, get success ?
         chrome.tabs.query({
           active: true,
           currentWindow: true
@@ -304,44 +349,45 @@ var ResultListConverterClass = function() {
           });
 
           // 2do: put in function --> is used above when we detect a filter which was set
-          // window.close();
-          parent.googleShowSuccessMessageFilterSet();
+          // window.close(); - not used anymore
+          //parent.googleShowSuccessMessageFilterSet();
 
         });
-        // this should be in promise of .query, but did not work
-      }) // eo button submit click
+        // this should be in promise of .query, but did not work 
 
+        }
+        // main checkbox was deactived, so we reset the filter
+        else{
+          $("input[name='google-include-nc']").prop('disabled', true);
+          $("input[name='google-include-nd']").prop('disabled', true);
 
-    // reset image search filter action (for both image or web search)
-    var parent = this;
-    $("#google-reset").on('click', function(e) {
+          var tempUrlObject = new URL(parent.originalUrlString);
+          var tempParamsObject = new URLSearchParams(tempUrlObject.search);
 
-      // 2DO: check if web or image search?
+          // set params for each case
+          tempParamsObject.set('tbs', "sur:");
+          tempParamsObject.set('as_rights', "");
+          tempParamsObject.set('start', "0");
+          resetUrl = tempUrlObject.origin + tempUrlObject.pathname + '?' + tempParamsObject.toString();
 
-      e.preventDefault();
+          chrome.tabs.query({
+            active: true,
+            currentWindow: true
+          }, function(tabs) {
+            var tab = tabs[0];
+            chrome.tabs.update(tab.id, {
+              url: resetUrl
+            });
+            window.close();
+          });
+        } 
 
-      var tempUrlObject = new URL(parent.originalUrlString);
-      var tempParamsObject = new URLSearchParams(tempUrlObject.search);
+      
 
-      // set params for each case
-      tempParamsObject.set('tbs', "sur:");
-      tempParamsObject.set('as_rights', "");
-      tempParamsObject.set('start', "0");
-      resetUrl = tempUrlObject.origin + tempUrlObject.pathname + '?' + tempParamsObject.toString();
+        //console.log('click - filter results', $(this));
 
-      chrome.tabs.query({
-        active: true,
-        currentWindow: true
-      }, function(tabs) {
-        var tab = tabs[0];
-        chrome.tabs.update(tab.id, {
-          url: resetUrl
-        });
-        window.close();
-      });
-
-
-    }); //eo google reset
+        
+      }) // eo button submit click / now: checkbox change event
 
   } // eo google
 

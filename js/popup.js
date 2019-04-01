@@ -88,24 +88,18 @@ $(document).ready(function() {
 
               console.log('OERhörnchen: Detected hostname match',websiteList[i].hostname_search_array);
               matchFound = true;
-              // call custom function dynamically
+              // call custom function dynamically, e.g. google function
               // see: https://stackoverflow.com/questions/969743/how-do-i-call-a-dynamically-named-method-in-javascript
               console.log("OERhörnchen: Call custom function for "+websiteList[i].name);
               var methodName = ""+websiteList[i].name+"";
               var arg1 = 1;
-              ResultListConverter[methodName](arg1);
+              var resultFromProcessing = ResultListConverter[methodName](arg1);
 
-              // render results
-              var popupUrls = ResultListConverter.getPopupUrls();
-              for (var i = 0; i < popupUrls.length; i++) {
-                console.log("OERhörnchen: Process url ",popupUrls[i]);
-                $("#newUrlList").append("<a href='"+popupUrls[i].url+"'>"+popupUrls[i].title+"</a>");
-              } // eo for popupurl list
             } // eo if hostname check was successful
 
           } // eo for website list
 
-          if(matchFound == false)
+          if(matchFound === false || resultFromProcessing === false)
           {
             $("#loading").hide();
             $("#no-results").show();
