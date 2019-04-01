@@ -1,0 +1,264 @@
+<!doctype html>
+<!--
+ This page is shown when the extension button is clicked, because the
+ "browser_action" field in manifest.json contains the "default_popup" key with
+ value "popup.html".
+
+ Icon: https://icons8.com/icons/set/squirrel -- replace!
+
+ https://gist.github.com/lmccart/7fe41e73d720c3946ef0
+ -->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OERhörnchen (0.1)</title>
+    <link rel="stylesheet" href="css/spectre.min.css">
+    <link rel="stylesheet" href="css/spectre-exp.min.css">
+    <link rel="stylesheet" href="css/spectre-icons.min.css">
+    <style>
+        body {
+        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+        /*font-size: 100%;*/
+        width:450px;
+        margin:0;
+        padding:0;
+      }
+      #container{
+        margin:5px;
+        padding:5px;
+        padding: 7px 15px;
+    min-width: 430px;
+    max-width: 100%;
+      }
+      #header{
+        width:100%;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+       
+      }
+
+      #header h1{
+        color:white;
+        margin:0 auto;
+        font-size:25px;
+        font-weight:800;
+        font-family:'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif;;
+      }
+
+      #status {
+        /* avoid an excessively wide status text */
+        white-space: pre;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 400px;
+      }
+      a{
+        cursor:pointer;
+      }
+
+      .vertical-menu {
+        width: 200px; /* Set a width if you like */
+      }
+
+      .vertical-menu a {
+        background-color: #eee; /* Grey background color */
+        color: black; /* Black text color */
+        display: block; /* Make the links appear below each other */
+        padding: 12px; /* Add some padding */
+        text-decoration: none; /* Remove underline from links */
+      }
+
+      .vertical-menu a:hover {
+        background-color: #ccc; /* Dark grey background on mouse-over */
+      }
+
+      .vertical-menu a.active {
+        background-color: #4CAF50; /* Add a green color to the "active/current" link */
+        color: white;
+      }
+
+/* https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_tab_header*/
+
+  /* privacy badger header */
+
+  #headerOuterStyles{
+    box-sizing: border-box;
+    background: #fefefe;
+    color: #333;
+    /*font-family: helvetica, arial, sans-serif;*/
+    font-size: 12px;
+    margin: 0;
+    padding: 7px 15px;
+    min-width: 430px;
+    max-width: 100%;
+    /*min-height: 270px;*/
+  }
+
+  #oerHoernchenHeader{
+  color: #505050;
+  font-size: 16px;
+  }
+  #oerHoernchenHeader h2{
+  margin: 5px;
+  padding-left: 5px;
+  float: left;
+  color: #707070;
+  font-size: 24px;
+  font-weight: normal;
+  /*font-family: helvetica, arial, 'Lucida Grande', 'Segoe UI', Tahoma, 'DejaVu Sans', sans-serif;*/
+}
+  #oerHoernchenHeader img{
+    float: left;
+    border-radius:25px;
+  }
+  #options{
+        float: right;
+    padding-top: 7px;
+  }
+  #help{
+  float: right;
+  padding-right: 5px;
+  padding-top: 7px;
+}
+#share{
+  float: right;
+  padding-right: 5px;
+  padding-top: 7px;
+  cursor: pointer;
+}
+#version {
+    float: left;
+    margin-top: -15px;
+    padding-left: 60px;
+    color: #707070;
+    font-size: 10px;
+}
+
+/* eo privacyBadger Header remix */
+
+.divider-vert[data-content]::after, .divider[data-content]::after {
+  color:grey;
+}
+
+
+    </style>
+    <!--
+      - JavaScript and HTML must be in separate files: see our Content Security
+      - Policy documentation[1] for details and explanation.
+      -
+      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
+     -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/result.list.converter.class.js"></script>
+    <script src="js/popup.js"></script>
+</head>
+
+<body>
+    <!-- remix from privacyBadger (EFF) -->
+    <div id="headerOuterStyles">
+        <div id="oerHoernchenHeader">
+            <!-- 2DO: add link to plugin overview page -->
+            <a id="options" href="#" class="control-button grey-button tooltip tooltipstered" style="display:block" target="_blank"><i class="icon icon-arrow-up"></i></a>
+            <!--<a id="share" class="control-button grey-button tooltip tooltipstered" style="display:block" target="_blank"><img width="25" height="auto" src="/icons/share.svg" alt="Teilen"></a>
+      <a id="help" href="/skin/firstRun.html" class="control-button grey-button tooltip tooltipstered" style="display:block" target="_blank"><img src="/icons/help.svg" alt="Hilfe"></a>-->
+            <div id="title">
+                <img src="assets/avatar_squirrel_pixabay_2781394_annawaldl_cc0_128.jpg" width="48" alt="">
+                <h2><span class="i18n_name">OERhörnchen</span></h2>
+            </div>
+            <!-- <div class="clear"></div> -->
+            <div class="clearfix"></div>
+            <div id="subtitle"><span id="version" class="i18n_version">Version 0.9 - <a href="https://oerhoernchen.de">oerhoernchen.de</a></div>
+        </div> <!-- eo header -->
+    </div><!-- eo outerStyles -->
+    <div id="container" class="container">
+        <div class="columns">
+            <div class="column col-12">
+                <div id="loading">
+                    <div class="empty">
+                        <!-- <figure class="avatar avatar-xl" style="background-color: red;">
+            <img src="avatar_squirrel_pixabay_2781394_annawaldl_cc0.jpg" alt="...">
+          </figure> -->
+                        <div class="loading loading-lg"></div>
+                        <p class="empty-subtitle">Prüfe die Webseite ...</p>
+                        <!-- <div class="empty-action">
+              <a class="btn btn-primary" href="https://twitter.com/oerhoernchen">Entwickler kontaktieren</a>
+            </div> -->
+                    </div>
+                </div>
+                <div id="google">
+
+                    <div class="toast toast-success" style="display:none;">
+                     <!-- <button class="btn btn-clear float-right"></button> -->
+                      <i class="icon icon-check"></i> Lizenzfilter wurde aktiviert
+                    </div>
+                    <div class="toast toast-info" style="text-align: center;">
+                      Lizenzfilter noch nicht aktiv, unten aktivieren:
+                    </div>
+
+                    <ul class="menu">
+                        <!-- menu header text -->
+                        <!-- <li class="divider" data-content="Lizenzfilter">
+  </li> -->
+                        <!-- menu item with form control -->
+                        <li class="menu-item">
+                            <label class="form-checkbox">
+                                <input type="checkbox" name="google-only-oer" checked="true" disabled>
+                                <i class="form-icon" style="border-color:green;background-color:green;opacity: 1 !important;"></i> <span class="text-success">OER-kompatible Inhalte anzeigen, die für alle Lehr- und Lernszenarien offen nutzbar sind<br><span style="font-size:80%">(CC0/Gemeinfrei, CC BY, CC BY-ShareAlike)</span></span>
+                            </label>
+                        </li>
+                        <li class="divider" data-content="Optional - zusätzlich miteinbeziehen:" style="color:grey;">
+                        </li>
+                        <!-- menu item with form control -->
+                        <li class="menu-item">
+                            <label class="form-checkbox" style="color:grey;font-size: 80%;line-height:1rem !important;">
+                                <input type="checkbox" name="google-include-nc" value="1">
+                                <i class="form-icon"></i>Inhalte, die nur <i>nichtkommerziell</i> genutzt werden dürfen (NC-Lizenz, kompatibel zur UNESCO-OER-Definition)
+                            </label>
+                        </li>
+                        <!-- <li class="divider" data-content="ND-Lizenzvariante">
+  </li> -->
+                        <!-- menu item with form control -->
+                        <li class="menu-item">
+                            <label class="form-checkbox" style="color:grey;font-size: 80%;line-height:1rem !important;">
+                                <input type="checkbox" name="google-include-nd" value="1">
+                                <i class="form-icon"></i> Inhalte, die nicht adaptiert/verändert werden dürfen (ND-Lizenz, kein OER gemäß UNESCO-Definition)
+                            </label>
+                        </li>
+                    </ul>
+                    <div class="p-centered" style="text-align:center;margin-top:20px;">
+                        <button id="google-filter-results" class="btn btn-primary btn-lg btn-error"><i class="icon icon-check"></i> <span>Lizenzfilter aktivieren</span></button>
+
+                        <br>
+                        <a id="google-reset"><small>Lizenzfilter deaktivieren</small></a>
+                        <!-- form switch control -->
+                        <!-- <div class="form-group" style="width:200px;margin:0 auto;">
+  <label class="form-switch">
+    <input type="checkbox">
+    <i class="form-icon"></i> Suchergebnisse filtern / Suchergebnisse werden gefiltert
+  </div>-->
+                    </div>
+                </div><!-- eo google -->
+                <div id="no-results" class="empty" style="padding: 1.2rem 1.6rem;">
+                    <!-- <p class="empty-title h5">Noch nichts erkannt</p> -->
+                    <p class="empty-subtitle" style="font-size:90%">Diese Seite lässt sich mit dem OERhörnchen-Plugin noch nicht schnell und einfach nach Inhalten unter offener Lizenz durchsuchen. Derzeit werden vom Plugin folgende Webseiten unterstützt: <a target="_blank" href="https://www.google.com/search?q=google+image+search+eichh%C3%B6rnchen&source=lnms&sa=X&ved=0ahUKEwjn5YfF0prhAhXMThUIHRA3CCIQ_AUICSgA&biw=1091&bih=581&dpr=1">Google Websuche</a>, <a target="_blank" href="https://www.google.com/search?q=google+image+search+eichh%C3%B6rnchen&source=lnms&tbm=isch&sa=X&ved=0ahUKEwie6cvD0prhAhUH4aQKHf0QAgsQ_AUIDigB&biw=1091&bih=581">Google Bildersuche</a>
+                        <ol style="font-size:90%;text-align: left">
+                            <li>Die Webseite öffnen</li>
+                            <li>Auf das OERhörnchen-Plugin im Browser klicken (oben rechts)</li>
+                        </ol>
+                        Weitere sollen folgen! Viele weitere Webseiten mit OER findest Du hier:
+                    </p>
+                    <div class="empty-action">
+                        <a class="btn btn-primary" href="https://oerhoernchen.de" target="_blank">oerhoernchen.de besuchen</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- eo container -->
+    <div id="newUrlList" class="vertical-menu">
+    </div>
+</body>
+
+</html>

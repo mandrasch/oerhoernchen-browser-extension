@@ -1,0 +1,10 @@
+[
+  {
+    "name": "google",
+    "hostname_search_array": ["google.de","google.com"]
+  },{
+  	"name":"matthiasandrasch",
+  	"hostname_search_array": ["matthias-andrasch.de"],
+  	"url_parameter_search_array": ["q="]
+  }
+]
