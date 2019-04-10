@@ -1,3 +1,15 @@
+Firefox: https://addons.mozilla.org/de/firefox/addon/oerh%C3%B6rnchen/
+
+Chrome: https://chrome.google.com/webstore/detail/oerh%C3%B6rnchen/oojclmchomjdmmgjcfgekmbanplfmgel?hl=de
+
+
+
+
+-------
+
+2DO: Clean this up :)
+
+
 PRIVACY VERSION
 
 => only open if user clicks on button
